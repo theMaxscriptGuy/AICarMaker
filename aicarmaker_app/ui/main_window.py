@@ -14,10 +14,36 @@ from PyQt6.QtWidgets import (
 
 from aicarmaker_app.services.gemini_client import GeminiClient
 from aicarmaker_app.services.render_service import CameraAngle, RenderService
-from aicarmaker_app.ui.widgets import CameraAnglesWidget, DropListWidget, LabeledLineEdit
+from aicarmaker_app.ui.widgets import (
+    CameraAnglesWidget,
+    DropListWidget,
+    LabeledComboBox,
+    LabeledLineEdit,
+)
 
 
 DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-image"
+
+CAR_COLOR_PRESETS = [
+    "Pearl White",
+    "Jet Black",
+    "Nardo Grey (flat primer-grey)",
+    "Racing Red",
+    "Metallic Silver",
+    "Deep Blue Metallic",
+    "British Racing Green",
+    "Champagne Gold",
+    "Matte Black",
+    "Midnight Purple",
+]
+
+CAR_PROMPT_PRESETS = [
+    "Modern electric sport sedan, clean surfacing, flush handles, panoramic roof, 21-inch aero wheels",
+    "Aggressive supercar, sharp lines, mid-engine proportions, wide stance, carbon fiber accents",
+    "Retro 80s-inspired coupe, pop-up headlight vibe, boxy silhouette, tasteful modern lighting",
+    "Off-road SUV, lifted stance, all-terrain tires, roof rack, rugged bumpers, practical design",
+    "Luxury grand tourer, long hood, premium paint, elegant chrome details, upscale interior",
+]
 
 
 class MainWindow(QWidget):
@@ -38,6 +64,17 @@ class MainWindow(QWidget):
             accept_ext={"png", "jpg", "jpeg", "webp", "pdf"},
             hint="Drop blueprint images/PDFs here (png/jpg/webp/pdf).",
         )
+
+        self.color_preset = LabeledComboBox("Color preset", items=CAR_COLOR_PRESETS, placeholder="(optional) Pick color…")
+        self.prompt_preset = LabeledComboBox(
+            "Prompt preset",
+            items=CAR_PROMPT_PRESETS,
+            placeholder="(optional) Pick a starter prompt…",
+        )
+
+        # When preset is selected, append it to the prompt box.
+        self.color_preset.combo().currentIndexChanged.connect(self._on_color_preset)
+        self.prompt_preset.combo().currentIndexChanged.connect(self._on_prompt_preset)
 
         self.car_prompt = QTextEdit()
         self.car_prompt.setPlaceholderText(
@@ -64,6 +101,12 @@ class MainWindow(QWidget):
         layout.addLayout(top)
         layout.addLayout(keys)
         layout.addWidget(self.blueprints)
+
+        presets = QHBoxLayout()
+        presets.addWidget(self.color_preset)
+        presets.addWidget(self.prompt_preset)
+        layout.addLayout(presets)
+
         layout.addWidget(self.car_prompt)
         layout.addWidget(self.angles)
         layout.addWidget(self.generate_btn)
@@ -72,6 +115,31 @@ class MainWindow(QWidget):
 
     def _append_log(self, msg: str) -> None:
         self.log.append(msg)
+
+    def _append_to_prompt(self, text: str) -> None:
+        text = (text or "").strip()
+        if not text:
+            return
+        current = self.car_prompt.toPlainText().strip()
+        if not current:
+            self.car_prompt.setPlainText(text)
+            return
+        # Avoid duplicate lines
+        if text.lower() in current.lower():
+            return
+        self.car_prompt.setPlainText(current + "\n" + text)
+
+    def _on_color_preset(self) -> None:
+        c = self.color_preset.current()
+        if not c:
+            return
+        self._append_to_prompt(f"Car color: {c}.")
+
+    def _on_prompt_preset(self) -> None:
+        p = self.prompt_preset.current()
+        if not p:
+            return
+        self._append_to_prompt(p)
 
     def on_generate(self) -> None:
         api_key = self.api_key.value()

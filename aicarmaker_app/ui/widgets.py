@@ -6,6 +6,7 @@ from pathlib import Path
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import (
     QAbstractItemView,
+    QComboBox,
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -37,6 +38,29 @@ class LabeledLineEdit(QWidget):
 
     def set_value(self, v: str) -> None:
         self._edit.setText(v)
+
+
+class LabeledComboBox(QWidget):
+    def __init__(self, label: str, *, items: list[str], placeholder: str = "Select…"):
+        super().__init__()
+        self._label = QLabel(label)
+        self._combo = QComboBox()
+        self._combo.addItem(placeholder)
+        for it in items:
+            self._combo.addItem(it)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self._label)
+        layout.addWidget(self._combo)
+        self.setLayout(layout)
+
+    def current(self) -> str:
+        t = self._combo.currentText().strip()
+        # If placeholder selected, treat as empty.
+        return "" if self._combo.currentIndex() == 0 else t
+
+    def combo(self) -> QComboBox:
+        return self._combo
 
 
 class DropListWidget(QFrame):
