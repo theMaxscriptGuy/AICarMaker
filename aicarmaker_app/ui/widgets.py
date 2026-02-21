@@ -172,9 +172,46 @@ class CameraAnglesWidget(QFrame):
 
     def set_default_angles(self) -> None:
         defaults = [
+            # Clean catalog angles
             Angle("Front 3/4", "Front-left three-quarter view, eye-level, 35mm lens"),
             Angle("Side profile", "Perfect side profile, centered, studio lighting"),
             Angle("Rear 3/4", "Rear-right three-quarter view, eye-level, 35mm lens"),
+
+            # Cinematic / ad-style city shots
+            Angle(
+                "Low hero front",
+                "Ultra-low angle near ground, front bumper dominant, wide 24mm, dramatic reflections, city street at blue hour",
+            ),
+            Angle(
+                "High rooftop reveal",
+                "High angle from rooftop/parking structure looking down, 35mm, car centered in urban grid, moody cinematic lighting",
+            ),
+            Angle(
+                "Tracking side motion",
+                "Side tracking shot with slight motion blur in background, 50mm, car sharp, neon city lights, advertisement vibe",
+            ),
+            Angle(
+                "Rear chase",
+                "Rear follow shot, slightly offset, 35mm, taillights glow, wet asphalt reflections, city night",
+            ),
+            Angle(
+                "Top-down symmetry",
+                "Perfect top-down drone shot, symmetrical framing on crosswalk/road markings, car centered, crisp highlights",
+            ),
+
+            # Feature-focused shots
+            Angle(
+                "Wheel & brake close-up",
+                "Close-up of front wheel, rim design and brake caliper, shallow depth of field, 85mm macro feel, city bokeh",
+            ),
+            Angle(
+                "Headlight signature close-up",
+                "Close-up on headlight/DRL signature, glossy paint reflections, 85mm, cinematic contrast, city bokeh",
+            ),
+            Angle(
+                "Interior cockpit tease",
+                "Driver-side interior view through open door/window, focus on steering + dash, 35mm, city lights outside, premium ad look",
+            ),
         ]
         for a in defaults:
             self._add_angle(a)
