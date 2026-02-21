@@ -10,13 +10,19 @@ from aicarmaker_app.ui.main_window import MainWindow
 def main() -> int:
     app = QApplication(sys.argv)
 
-    # Light-ish defaults
-    app.setStyleSheet(
-        """
-        QWidget { font-size: 13px; }
-        QLineEdit, QTextEdit { background: white; }
-        """
-    )
+    # Theme via qt-material
+    # Available themes include: dark_cyan.xml, light_cyan.xml, etc.
+    try:
+        from qt_material import apply_stylesheet  # type: ignore
+
+        apply_stylesheet(app, theme="dark_cyan.xml")
+    except Exception:
+        # Fallback: basic style
+        app.setStyleSheet(
+            """
+            QWidget { font-size: 13px; }
+            """
+        )
 
     w = MainWindow()
     w.show()

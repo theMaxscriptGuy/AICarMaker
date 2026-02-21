@@ -6,6 +6,7 @@
 
 PyQt6>=6.6
 requests>=2.31
+qt-material>=2.14
 
 # Gemini image generation (SDK path)
 google-genai>=0.7.0

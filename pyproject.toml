@@ -9,6 +9,7 @@ authors = [{name = "Videep Mishraa"}]
 dependencies = [
   "PyQt6>=6.6",
   "requests>=2.31",
+  "qt-material>=2.14",
 ]
 
 [project.optional-dependencies]
