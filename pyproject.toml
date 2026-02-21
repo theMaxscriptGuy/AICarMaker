@@ -1,0 +1,28 @@
+[project]
+name = "aicarmaker"
+version = "0.1.0"
+description = "A car configurator based on blueprints (Gemini-powered)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Videep Mishraa"}]
+dependencies = [
+  "PyQt6>=6.6",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+gemini = [
+  "google-genai>=0.7.0",
+  "Pillow>=10.0",
+]
+
+[project.scripts]
+aicarmaker = "aicarmaker_app.main:main"
+
+[tool.ruff]
+line-length = 110
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
