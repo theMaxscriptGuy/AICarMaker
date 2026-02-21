@@ -1,0 +1,12 @@
+# AICarMaker requirements
+#
+# This file is provided for simple installs (pip install -r requirements.txt).
+# For editable installs (recommended for development), use:
+#   pip install -e ".[gemini]"
+
+PyQt6>=6.6
+requests>=2.31
+
+# Gemini image generation (SDK path)
+google-genai>=0.7.0
+Pillow>=10.0
