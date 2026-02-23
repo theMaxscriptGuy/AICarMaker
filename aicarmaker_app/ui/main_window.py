@@ -22,7 +22,7 @@ from aicarmaker_app.ui.widgets import (
 )
 
 
-DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-image"
+DEFAULT_GEMINI_MODEL = "gemini-3-pro-image-preview"
 
 CAR_COLOR_PRESETS = [
     "Pearl White",
